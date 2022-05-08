@@ -1,3 +1,4 @@
+
 import { createStore } from 'vuex'
 
 export default createStore({
@@ -31,14 +32,19 @@ export default createStore({
     deleteArt(state, playload){
       for(let i = 0; i < state.article.length; i++){
         if(state.article[i].id == playload){
-          state.article = state.article.splice(i);
+          state.article.splice(i, 1);
+          
         }
       }
     }
   },
   actions: {
     saveArticle(state, payload){
-      state.article.push(payload);        
+      for(let i = 0; i < state.article.length; i++){
+        if(state.article[1].id == payload.id){
+          state.article[i] = payload;
+        }
+      }        
     }
   },
   getters:{
@@ -46,7 +52,6 @@ export default createStore({
         return state.article
       }, 
       getArticleItem: state =>(id) =>{
-        console.log(id)
         /*for(let i = 0; i < state.article.length; i++){
           console.log(state.article[i].id)
           if(state.article[i].id == id){
@@ -55,8 +60,8 @@ export default createStore({
         } */
         return state.article.find(art => art.id == id)
       },
-      getArticlePolitics: state =>{
-         return state.article.find(art => art.category == '1' );
+      getArticleSort: state =>(category) => {
+         return state.article.filter(art => art.category == category );
          
       }
   },
